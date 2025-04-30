@@ -1,19 +1,18 @@
-from flask import Flask, jsonify
-from job_scraper import run_all_scrapers
+from flask import Flask
+import os
+from scraper import run_all_scrapers  # On suppose que ton script est déplacé dans scraper.py
 
 app = Flask(__name__)
 
-@app.route("/")
+@app.route('/')
 def home():
-    return "✅ Job Scraper API est en ligne !"
+    return "Bot d'offres d'emploi opérationnel !"
 
-@app.route("/run-scraper", methods=["GET"])
-def run_scraper():
-    try:
-        inserted = run_all_scrapers()
-        return jsonify({"status": "success", "inserted": inserted})
-    except Exception as e:
-        return jsonify({"status": "error", "message": str(e)}), 500
+@app.route('/run')
+def run_jobs():
+    run_all_scrapers()
+    return "Scraping lancé !"
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
