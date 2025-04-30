@@ -1,18 +1,17 @@
 from flask import Flask
-import os
-from scraper import run_all_scrapers  # On suppose que ton script est déplacé dans scraper.py
+import scraper  # Importation du module scraper
 
 app = Flask(__name__)
 
 @app.route('/')
-def home():
-    return "Bot d'offres d'emploi opérationnel !"
+def index():
+    return "🚀 Le scraper fonctionne !"
 
-@app.route('/run')
-def run_jobs():
-    run_all_scrapers()
-    return "Scraping lancé !"
+@app.route('/run-scraper')
+def run_scraper():
+    """Route pour lancer le scraping"""
+    scraper.run_all_scrapers()
+    return "✅ Scraping terminé avec succès !"
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
